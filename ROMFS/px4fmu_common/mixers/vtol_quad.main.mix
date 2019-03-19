@@ -1,9 +1,6 @@
 
 #Group 1: vtol-mode
-#		- index 4: aux 1 channel für fernbedienung
 
-# Syntax: S: <group> <index> <-ve scale> <+ve scale> <offset> <lower limit> <upper limit>
-# thrust = (roll*rollScale + pitch*pitchScale + yaw*yawScale + collective_thrust)*outputScale
 # Motor 1 (left front, CW)
 #---------------------------
 M: 6
