@@ -1,4 +1,3 @@
-
 #!nsh
 #
 # @name VTOL Quad
@@ -6,27 +5,26 @@
 # @type VTOL Tiltrotor
 # @class VTOL
 #
-# @maintainer 
+# @maintainer Benjamin Haller
 #
-# @output MAIN1 Motor left front 	(CW)
-# @output MAIN2 Motor right front	(CCW)
-# @output MAIN3 Motor left back 	(CCW)
+# @output MAIN1 Motor right front 	(CCW)
+# @output MAIN2 Motor left back		(CCW)
+# @output MAIN3 Motor left front	(CW)
 # @output MAIN4 Motor right back	(CW)
 # @output MAIN5 Servo vorne rechts
 # @output MAIN6 Servo vorne links
-# @output MAIN7 NULL
-# @output MAIN8 NULL
-# @output AUX1 Tilt-Servo
+# @output MAIN7 empty
+# @output MAIN8 Tiltservo
 
 sh /etc/init.d/rc.vtol_defaults
 
 if [ $AUTOCNF = yes ]
 then
-	param set CBRK_AIRSPD_CHK 162128
+#	param set CBRK_AIRSPD_CHK 162128		# disable airspeed-sensor
 
-	param set FW_ARSP_MODE 2
+#	param set FW_ARSP_MODE 1				# disable airspeed-sensor
 
-	param set FW_L1_PERIOD 17
+	# Drehraten:
 	param set FW_MAN_R_MAX 50.0
 	param set FW_ACRO_X_MAX   270
 	param set FW_ACRO_Y_MAX   270
@@ -42,7 +40,8 @@ then
 	param set FW_RR_P 0.11
 	param set FW_YR_FF    0.3
 	param set FW_YR_P 0.05
-
+	
+	#PID:
 	param set MC_PITCHRATE_D  0.003
 	param set MC_PITCHRATE_P  0.15
 	param set MC_PITCH_P  6.0
@@ -60,28 +59,33 @@ then
 
 	param set PWM_RATE 400
 
-	param set SENS_BOARD_ROT 8
+	param set SENS_BOARD_ROT 4		# Pixhawk 180 Yaw
 
-	param set VT_B_TRANS_DUR  1.0
-	param set VT_F_TRANS_DUR  1.2
-	param set VT_F_TR_OL_TM   4.0
+	#VTOL-Transition-Settings:
+	param set VT_B_TRANS_DUR  1
+	param set VT_F_TRANS_DUR  2
+	param set VT_F_TR_OL_TM   6.0
 	param set VT_FW_DIFTHR_EN 1
-	param set VT_FW_DIFTHR_SC 0.17
-	param set VT_FW_MOT_OFFID 3
+	param set VT_FW_DIFTHR_SC 0.22
+	param set VT_FW_MOT_OFFID 0
 	param set VT_FW_PERM_STAB 0
-	param set VT_IDLE_PWM_MC 1200
-	param set VT_MOT_COUNT 3
+	param set VT_IDLE_PWM_MC 1200	# idle in Multicopter-Mode
+	param set VT_MOT_COUNT 4
 	param set VT_TILT_FW  1.0
 	param set VT_TILT_MC  0.0
-	param set VT_TILT_TRANS   0.45
-	param set VT_TRANS_MIN_TM 1.2
+	param set VT_TILT_TRANS   0.40
+	param set VT_TRANS_MIN_TM 1.5
 	param set VT_TRANS_P2_DUR 1.3
 	param set VT_TYPE 1
+	
+	#PWM for transition-servo:
+	param set PWM_MAIN_MAX8 1960	# max pwm transition-servo
+	param set PWM_MAIN_MIN8 1000	# min pwm transition-servo
+	param set PWM_MAIN_DIS8 1000	# pwm of transition-servo when disarmed (default 900)
 fi
 
 set MAV_TYPE 21
 
 set MIXER vtol_quad
-set MIXER_AUX vtol_quad
 
 set PWM_OUT 1234
